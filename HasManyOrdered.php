@@ -76,9 +76,9 @@ class HasManyOrdered extends hasMany implements hasManyContract
     }
 
     /**
-     * All the threads ordered by latest first by default
-     * @param  boolean $latestFirst [description]
-     * @return [type]               [description]
+     * All the available elements in the sorted set ordered by the lastest first by default.
+     * @param  boolean $latestFirst
+     * @return array
      */
     public function all($latestFirst = true)
     {
