@@ -76,6 +76,30 @@ class HasManyOrdered extends hasMany implements hasManyContract
     }
 
     /**
+     * set the limit value of the query
+     * @param int
+     */
+    public function take($value)
+    {
+        if ($value >= 0) {
+            $this->take = $value;
+        }
+        return $this;
+    }
+
+    /**
+     * set the offset value of the query
+     * @param int
+     */
+    public function skip($value)
+    {
+        if ($value >= 0) {
+            $this->skip = $value;
+        }
+        return $this;
+    }
+
+    /**
      * All the available elements in the sorted set ordered by the lastest first by default.
      * @param  boolean $latestFirst
      * @return array
