@@ -92,6 +92,11 @@ class HasManyOrdered extends hasMany implements hasManyContract
 
     // User::init(20)->threads()->take(20)->skip(10)->orderBy('range');
 
+    /**
+     * Set the order and method to handle the final result.
+     * @param  string $orderMode
+     * @param  string $orderDirection
+     */
     public function orderBy($orderMode = 'range', $orderDirection = 'asc')
     {
         $allowedModes = ['score', 'range'];
