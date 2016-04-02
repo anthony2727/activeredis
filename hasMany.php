@@ -11,6 +11,8 @@ abstract class HasMany
     protected $individualContainerClass;
     protected $take;
     protected $skip;
+    protected $orderMethod;
+    protected $orderDirection;
 
     public function __construct($who, $hasMany, $individualContainerClass)
     {
