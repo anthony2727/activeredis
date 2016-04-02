@@ -85,9 +85,9 @@ class HasManyOrdered extends hasMany implements hasManyContract
         $skip = $this->skip;
     }
 
-    protected function compileOrder($latestFirst = true)
+    protected function compileOrder()
     {
-
+        $order = $this->order;
     }
 
     // User::init(20)->threads()->take(20)->skip(10)->orderBy('range');
@@ -119,6 +119,11 @@ class HasManyOrdered extends hasMany implements hasManyContract
         ];
 
         return $orderComposition[$orderMode][$orderDirection];
+
+    }
+
+    public function get()
+    {
 
     }
 
