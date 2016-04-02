@@ -75,28 +75,46 @@ class HasManyOrdered extends hasMany implements hasManyContract
 
     }
 
-    /**
-     * set the limit value of the query
-     * @param int
-     */
-    public function take($value)
+    protected function compileTaking()
     {
-        if ($value >= 0) {
-            $this->take = $value;
-        }
-        return $this;
+        $take = $this->limit;
     }
 
-    /**
-     * set the offset value of the query
-     * @param int
-     */
-    public function skip($value)
+    protected function compileSkiping()
     {
-        if ($value >= 0) {
-            $this->skip = $value;
+        $skip = $this->skip;
+    }
+
+    protected function compileOrder($latestFirst = true)
+    {
+
+    }
+
+    // User::init(20)->threads()->take(20)->skip(10)->orderBy('range');
+
+    public function orderBy($orderMode = 'range', $orderDirection = 'asc')
+    {
+        $allowedModes = ['score', 'range'];
+
+        if (!in_array($orderMode, $allowedModes)) {
+            throw new \Exception('order mode is not allowed');
         }
-        return $this;
+
+        $orderDirection = strtolower($orderDirection);
+
+        $orderComposition = [
+            'score' => [
+                'asc'  => 'zrangebyscore',
+                'desc' => 'zrevrangebyscore',
+            ],
+            'range' => [
+                'asc'  => 'zrange',
+                'desc' => 'zrevrange',
+            ],
+        ];
+
+        return $orderComposition[$orderMode][$orderDirection];
+
     }
 
     /**
@@ -106,7 +124,8 @@ class HasManyOrdered extends hasMany implements hasManyContract
      */
     public function all($latestFirst = true)
     {
-        $method             = $latestFirst ? 'zrevrangebyscore' : 'zrangebyscore';
+        $direction          = $latestFirst ? 'desc' : 'asc';
+        $method             = $this->orderBy('range', $direction);
         list($first, $last) = $latestFirst ? ['+inf', '-inf'] : ['-inf', '+inf'];
         $args               = ["{$this->who}:{$this->hasMany}", $first, $last];
         return call_user_func_array(['Redis', $method], $args);
