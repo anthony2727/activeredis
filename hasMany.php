@@ -9,12 +9,38 @@ abstract class HasMany
     public $who;
     protected $hasMany;
     protected $individualContainerClass;
+    protected $take;
+    protected $skip;
 
     public function __construct($who, $hasMany, $individualContainerClass)
     {
         $this->who                      = $who;
         $this->hasMany                  = $hasMany;
         $this->individualContainerClass = $individualContainerClass;
+    }
+
+    /**
+     * set the limit value of the query
+     * @param int
+     */
+    public function take($value)
+    {
+        if ($value >= 0) {
+            $this->take = $value;
+        }
+        return $this;
+    }
+
+    /**
+     * set the offset value of the query
+     * @param int
+     */
+    public function skip($value)
+    {
+        if ($value >= 0) {
+            $this->skip = $value;
+        }
+        return $this;
     }
 
     public function find($element)
